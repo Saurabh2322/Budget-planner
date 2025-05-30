@@ -51,33 +51,24 @@ function App() {
 
   // Load transactions from localStorage on component mount
   useEffect(() => {
-    console.log('Loading transactions from localStorage...');
     const savedTransactions = localStorage.getItem('budgetTransactions');
-    console.log('Raw localStorage data:', savedTransactions);
-    
     if (savedTransactions) {
       try {
         const parsedTransactions = JSON.parse(savedTransactions);
-        console.log('Parsed transactions:', parsedTransactions);
         if (Array.isArray(parsedTransactions)) {
           setTransactions(parsedTransactions);
-          console.log('Transactions loaded successfully');
         }
       } catch (error) {
         console.error('Error loading transactions from localStorage:', error);
         localStorage.removeItem('budgetTransactions');
       }
-    } else {
-      console.log('No saved transactions found');
     }
   }, []);
 
   // Save transactions to localStorage whenever transactions change
   useEffect(() => {
-    console.log('Saving transactions to localStorage:', transactions);
     if (transactions.length > 0) {
       localStorage.setItem('budgetTransactions', JSON.stringify(transactions));
-      console.log('Transactions saved to localStorage');
     }
   }, [transactions]);
 
