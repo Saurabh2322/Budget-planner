@@ -74,12 +74,7 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted with data:', formData);
-    
-    if (!formData.amount || !formData.description) {
-      console.log('Validation failed:', { amount: formData.amount, description: formData.description });
-      return;
-    }
+    if (!formData.amount || !formData.description) return;
 
     const newTransaction = {
       id: Date.now().toString(),
@@ -88,14 +83,7 @@ function App() {
       timestamp: new Date().toISOString()
     };
 
-    console.log('Creating new transaction:', newTransaction);
-    console.log('Current transactions before update:', transactions);
-    
-    setTransactions(prevTransactions => {
-      const updatedTransactions = [newTransaction, ...prevTransactions];
-      console.log('Updated transactions:', updatedTransactions);
-      return updatedTransactions;
-    });
+    setTransactions(prevTransactions => [newTransaction, ...prevTransactions]);
     
     setFormData({
       amount: '',
@@ -104,8 +92,6 @@ function App() {
       description: '',
       date: format(new Date(), 'yyyy-MM-dd')
     });
-    
-    console.log('Form reset complete');
   };
 
   const deleteTransaction = (id) => {
