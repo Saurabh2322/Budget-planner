@@ -53,13 +53,23 @@ function App() {
   useEffect(() => {
     const savedTransactions = localStorage.getItem('budgetTransactions');
     if (savedTransactions) {
-      setTransactions(JSON.parse(savedTransactions));
+      try {
+        const parsedTransactions = JSON.parse(savedTransactions);
+        if (Array.isArray(parsedTransactions)) {
+          setTransactions(parsedTransactions);
+        }
+      } catch (error) {
+        console.error('Error loading transactions from localStorage:', error);
+        localStorage.removeItem('budgetTransactions');
+      }
     }
   }, []);
 
   // Save transactions to localStorage whenever transactions change
   useEffect(() => {
-    localStorage.setItem('budgetTransactions', JSON.stringify(transactions));
+    if (transactions.length > 0) {
+      localStorage.setItem('budgetTransactions', JSON.stringify(transactions));
+    }
   }, [transactions]);
 
   const handleSubmit = (e) => {
