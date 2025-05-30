@@ -98,14 +98,15 @@ function App() {
   };
 
   const getCategoryData = () => {
-    const currentMonthTransactions = transactions.filter(t => 
-      t.date.startsWith(selectedMonth)
-    );
+    const currentMonthTransactions = transactions.filter(t => {
+      if (!t.date) return false;
+      return t.date.startsWith(selectedMonth);
+    });
 
     const categoryTotals = {};
     currentMonthTransactions.forEach(t => {
-      if (t.type === 'expense') {
-        categoryTotals[t.category] = (categoryTotals[t.category] || 0) + t.amount;
+      if (t.type === 'expense' && t.category && t.amount) {
+        categoryTotals[t.category] = (categoryTotals[t.category] || 0) + (Number(t.amount) || 0);
       }
     });
 
