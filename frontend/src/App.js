@@ -496,6 +496,11 @@ function App() {
                 const total = categoryData[category.id] || 0;
                 const percentage = currentExpenses > 0 ? (total / currentExpenses * 100) : 0;
                 
+                // Only show categories that have transactions or are commonly used
+                const isRelevant = total > 0 || ['food', 'transport', 'entertainment', 'bills', 'shopping', 'salary', 'other'].includes(category.id);
+                
+                if (!isRelevant) return null;
+                
                 return (
                   <div 
                     key={category.id}
@@ -529,7 +534,7 @@ function App() {
                     )}
                   </div>
                 );
-              })}
+              }).filter(Boolean)}
             </div>
           </div>
         )}
