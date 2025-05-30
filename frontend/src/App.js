@@ -141,17 +141,22 @@ function App() {
     return monthlyTotals;
   };
 
-  const currentMonthTransactions = transactions.filter(t => 
-    t.date.startsWith(selectedMonth)
-  );
+  const getCurrentMonthTransactions = () => {
+    return transactions.filter(t => {
+      if (!t.date) return false;
+      return t.date.startsWith(selectedMonth);
+    });
+  };
+
+  const currentMonthTransactions = getCurrentMonthTransactions();
 
   const currentIncome = currentMonthTransactions
     .filter(t => t.type === 'income')
-    .reduce((sum, t) => sum + t.amount, 0);
+    .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
 
   const currentExpenses = currentMonthTransactions
     .filter(t => t.type === 'expense')
-    .reduce((sum, t) => sum + t.amount, 0);
+    .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
 
   const categoryData = getCategoryData();
   const monthlyData = getMonthlyData();
