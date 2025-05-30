@@ -121,15 +121,15 @@ function App() {
 
     const monthlyTotals = months.map(month => {
       const monthStr = format(month, 'yyyy-MM');
-      const monthTransactions = transactions.filter(t => t.date.startsWith(monthStr));
+      const monthTransactions = transactions.filter(t => t.date && t.date.startsWith(monthStr));
       
       const income = monthTransactions
-        .filter(t => t.type === 'income')
-        .reduce((sum, t) => sum + t.amount, 0);
+        .filter(t => t.type === 'income' && t.amount)
+        .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
       
       const expenses = monthTransactions
-        .filter(t => t.type === 'expense')
-        .reduce((sum, t) => sum + t.amount, 0);
+        .filter(t => t.type === 'expense' && t.amount)
+        .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
 
       return {
         month: format(month, 'MMM yyyy'),
